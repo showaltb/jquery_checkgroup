@@ -1,15 +1,15 @@
 (function($){
 	$.fn.checkgroup = function(options){
+    // use a closure to allow this to be called for multiple groups
+    (function(ctrl_box, options) {
 		//merge settings
-		settings=$.extend({
+		var settings=$.extend({
 			groupSelector:null,
 			groupName:'group_name',
 			enabledOnly:false,
 			onComplete:null,
 			onChange:null
 		},options || {});
-		
-		var ctrl_box=this;
 		
 		//allow a group selector override option
 		var grp_slctr = (settings.groupSelector==null) ? 'input[name='+settings.groupName+']' : settings.groupSelector;
@@ -19,13 +19,13 @@
 		var _onChange = settings.onChange;
 		
 		//internal functions
-		_ctrl_box_autoenable = function (){
+		var _ctrl_box_autoenable = function (){
 			//if # of chkbxes is equal to # of chkbxes that are checked
 			if($(grp_slctr).size()==$(grp_slctr+':checked').size()){
 				ctrl_box.attr('checked','checked');
 			}			
 		}		
-		_ctrl_box_autodisable = function(){
+		var _ctrl_box_autodisable = function(){
 			ctrl_box.attr('checked',false);
 		}	
 		
@@ -71,6 +71,7 @@
 		
 		//initialize
 		_ctrl_box_autoenable();
+    }(this, options));
 
 		//make this function chainable within jquery
 		return this;
